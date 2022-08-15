@@ -1,23 +1,46 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import OrderForm from './components/OrderForm';
+import OrderList from './components/OrderList';
 
 function App() {
+
+  const orderData = [
+    {
+      id: Math.random().toString(),
+      item: "pizza",
+      description: "delicious cheese"
+    },
+    {
+      id: Math.random().toString(),
+      item: "pasta",
+      description: "tortallini"
+    },
+    {
+      id: Math.random().toString(),
+      item: "salad",
+      description: "let us eat"
+    }
+  ];
+
+  const [orders, setOrders] = useState(orderData);
+
+  const deleteHandler = (id) => {
+    const newOrders = orders.filter((order) => order.id !== id);
+    setOrders(newOrders);
+    };
+
+  const orderHandler = (order) => {
+    setOrders(prevOrders => {
+      return[order, ...prevOrders];
+    });
+  };  
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h2>HELLO WRLD</h2>
+      <OrderForm onAddOrder={orderHandler}/>
+      <OrderList orders={orders} onDeleteOrder={deleteHandler}/>
     </div>
   );
 }
